@@ -55,27 +55,28 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(15, 1fr);
-            gap: 2px;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 3px;
             background: #e2e8f0;
-            padding: 10px;
+            padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
 
         .cell {
-            width: 25px;
-            height: 25px;
+            width: 35px;
+            height: 35px;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 3px;
+            border-radius: 5px;
             user-select: none;
+            border: 2px solid #e2e8f0;
         }
 
         .cell:hover {
@@ -230,7 +231,7 @@
 <body>
     <div class="container">
         <h1>🐉 Gra "Ukryte Słowa" 🐉</h1>
-        <p class="subtitle">Znajdź wszystkie 8 ukrytych japońskich wyrazów!</p>
+        <p class="subtitle">Znajdź wszystkie 8 ukrytych słów! Przeciągnij myszką po literach.</p>
         
         <div class="progress-text">Postęp: <span id="progress-count">0</span>/8</div>
         <div class="progress">
@@ -262,21 +263,21 @@
 
     <script>
         const words = [
-            { text: 'ITADAKIMASU', meaning: 'Dziękuję za posiłek' },
-            { text: 'OISHII', meaning: 'Pyszne' },
-            { text: 'SAIKO', meaning: 'Świetnie' },
-            { text: 'YUKKURI', meaning: 'Powoli' },
-            { text: 'TEBURU', meaning: 'Stół' },
-            { text: 'KAIJU', meaning: 'Potwór' },
-            { text: 'OKAWARI', meaning: 'Dokładka' },
-            { text: 'DOZO', meaning: 'Proszę' }
+            { text: 'KOT', meaning: 'Małe zwierzątko' },
+            { text: 'PIES', meaning: 'Najlepszy przyjaciel' },
+            { text: 'DOM', meaning: 'Miejsce gdzie mieszkamy' },
+            { text: 'SŁOŃCE', meaning: 'Świeci na niebie' },
+            { text: 'WODA', meaning: 'Pijemy ją codziennie' },
+            { text: 'KWIAT', meaning: 'Rośnie w ogrodzie' },
+            { text: 'MIŁOŚĆ', meaning: 'Uczucie do rodziny' },
+            { text: 'ZABAWA', meaning: 'To co lubimy robić' }
         ];
 
         let grid = [];
         let foundWords = [];
         let selectedCells = [];
         let isSelecting = false;
-        let gridSize = 15;
+        let gridSize = 10;
 
         // Wypełnienie siatki losowymi literami
         function fillGrid() {
@@ -290,17 +291,11 @@
             }
         }
 
-        // Umieszczenie słów w siatce
+        // Umieszczenie słów w siatce (tylko poziomo i pionowo dla łatwości)
         function placeWords() {
             const directions = [
                 [0, 1],   // poziomo w prawo
                 [1, 0],   // pionowo w dół
-                [1, 1],   // ukośnie w prawo-dół
-                [0, -1],  // poziomo w lewo
-                [-1, 0],  // pionowo w górę
-                [-1, -1], // ukośnie w lewo-górę
-                [1, -1],  // ukośnie w lewo-dół
-                [-1, 1]   // ukośnie w prawo-górę
             ];
 
             words.forEach(wordObj => {

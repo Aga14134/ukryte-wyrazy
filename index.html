@@ -55,7 +55,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
+            grid-template-columns: repeat(12, 1fr);
             gap: 3px;
             background: #e2e8f0;
             padding: 15px;
@@ -230,8 +230,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>🐉 Gra "Ukryte Słowa" 🐉</h1>
-        <p class="subtitle">Znajdź wszystkie 8 ukrytych słów! Przeciągnij myszką po literach.</p>
+        <h1>🐉 Nauka Japońskiego - Ukryte Słowa 🐉</h1>
+        <p class="subtitle">Znajdź wszystkie 8 japońskich wyrazów! Przeciągnij myszką po literach.</p>
         
         <div class="progress-text">Postęp: <span id="progress-count">0</span>/8</div>
         <div class="progress">
@@ -263,21 +263,21 @@
 
     <script>
         const words = [
-            { text: 'KOT', meaning: 'Małe zwierzątko' },
-            { text: 'PIES', meaning: 'Najlepszy przyjaciel' },
-            { text: 'DOM', meaning: 'Miejsce gdzie mieszkamy' },
-            { text: 'SŁOŃCE', meaning: 'Świeci na niebie' },
-            { text: 'WODA', meaning: 'Pijemy ją codziennie' },
-            { text: 'KWIAT', meaning: 'Rośnie w ogrodzie' },
-            { text: 'MIŁOŚĆ', meaning: 'Uczucie do rodziny' },
-            { text: 'ZABAWA', meaning: 'To co lubimy robić' }
+            { text: 'ITADAKIMASU', meaning: 'Dziękuję za posiłek' },
+            { text: 'OISHII', meaning: 'Pyszne' },
+            { text: 'SAIKO', meaning: 'Świetnie' },
+            { text: 'YUKKURI', meaning: 'Powoli' },
+            { text: 'TEBURU', meaning: 'Stół' },
+            { text: 'KAIJU', meaning: 'Potwór' },
+            { text: 'OKAWARI', meaning: 'Dokładka' },
+            { text: 'DOZO', meaning: 'Proszę' }
         ];
 
         let grid = [];
         let foundWords = [];
         let selectedCells = [];
         let isSelecting = false;
-        let gridSize = 10;
+        let gridSize = 12;
 
         // Wypełnienie siatki losowymi literami
         function fillGrid() {

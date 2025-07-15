@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Ukryte Słowa - Gra dla Dzieci</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      background-color: #fefbd8;
+    }
+
+    h1 {
+      color: #ff6f61;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(14, 40px);
+      gap: 4px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .letter {
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      border: 2px solid #ccc;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    .found {
+      background-color: #a8e6cf;
+      color: #000;
+    }
+
+    #wordList {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .foundWord {
+      text-decoration: line-through;
+      color: green;
+    }
+
+    #monsterImage {
+      display: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧠 Ukryte Słowa: Znajdź Potwora Anime!</h1>
+
+<div id="wordList">
+  <strong>Znajdź słowa:</strong>
+  <ul id="words">
+    <li>Itadakimasu</li>
+    <li>Oishii</li>
+    <li>Saikō</li>
+    <li>Yukkuri</li>
+    <li>Tēburu</li>
+    <li>Kaijū</li>
+    <li>Okawari</li>
+    <li>Dōzo</li>
+  </ul>
+</div>
+
+<div class="grid" id="letterGrid"></div>
+
+<img id="monsterImage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Godzilla_icon.svg/512px-Godzilla_icon.svg.png" width="150" alt="Potwór Anime">
+
+<script>
+  const words = ["Itadakimasu", "Oishii", "Saikō", "Yukkuri", "Tēburu", "Kaijū", "Okawari", "Dōzo"];
+  const gridSize = 14;
+  const grid = [];
+  const foundWords = new Set();
+
+  // Uzupełnij pustą siatkę losowymi literami
+  function fillGrid() {
+    for (let i = 0; i < gridSize * gridSize; i++) {
+      grid[i] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    }
+
+    // Wstaw ukryte słowa (losowo w poziomie lub pionie)
+    words.forEach(word => {
+      const cleanWord = word.replace(/[^A-Za-z]/g, '');
+      let placed = false;
+      while (!placed) {
+        const dir = Math.random() > 0.5 ? 'H' : 'V';
+        const row = Math.floor(Math.random() * (dir === 'H' ? gridSize : gridSize - cleanWord.length));
+        const col = Math.floor(Math.random() * (dir === 'V' ? gridSize : gridSize - cleanWord.length));
+        let fits = true;
+
+        for (let i = 0; i < cleanWord.length; i++) {
+          const r = dir === 'H' ? row : row + i;
+          const c = dir === 'H' ? col + i : col;
+          const idx = r * gridSize + c;
+          if (grid[idx] !== cleanWord[i] && grid[idx] !== undefined) {
+            fits = false;
+            break;
+          }
+        }
+
+        if (fits) {
+          for (let i = 0; i < cleanWord.length; i++) {
+            const r = dir === 'H' ? row : row + i;
+            const c = dir === 'H' ? col + i : col;
+            grid[r * gridSize + c] = cleanWord[i];
+          }
+          placed = true;
+        }
+      }
+    });
+  }
+
+  function renderGrid() {
+    const container = document.getElementById("letterGrid");
+    container.innerHTML = '';
+    grid.forEach((char, i) => {
+      const div = document.createElement("div");
+      div.className = "letter";
+      div.dataset.index = i;
+      div.textContent = char;
+      container.appendChild(div);
+    });
+  }
+
+  let selectedIndices = [];
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains("letter")) {
+      const idx = +e.target.dataset.index;
+      selectedIndices.push(idx);
+      e.target.style.backgroundColor = "#ffe082";
+
+      if (selectedIndices.length >= 3) {
+        const selectedWord = selectedIndices.map(i => grid[i]).join('');
+        const match = words.find(word => word.replace(/[^A-Za-z]/g, '').toLowerCase() === selectedWord.toLowerCase());
+        if (match && !foundWords.has(match)) {
+          foundWords.add(match);
+          selectedIndices.forEach(i => {
+            const el = document.querySelector(`[data-index="${i}"]`);
+            el.classList.add("found");
+          });
+          document.querySelectorAll('#words li').forEach(li => {
+            if (li.textContent === match) li.classList.add('foundWord');
+          });
+          if (foundWords.size === words.length) {
+            document.getElementById("monsterImage").style.display = 'block';
+          }
+        }
+        selectedIndices = [];
+        document.querySelectorAll('.letter').forEach(l => {
+          if (!l.classList.contains('found')) l.style.backgroundColor = 'white';
+        });
+      }
+    }
+  });
+
+  fillGrid();
+  renderGrid();
+</script>
+
+</body>
+</html>

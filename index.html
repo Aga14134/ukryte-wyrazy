@@ -43,40 +43,40 @@
 
         .game-area {
             display: flex;
+            flex-direction: column;
             gap: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
         }
 
         .grid-container {
-            flex: 1;
-            min-width: 400px;
+            width: 100%;
+            max-width: 500px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 3px;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
             background: #e2e8f0;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 20px;
         }
 
         .cell {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 5px;
+            border-radius: 8px;
             user-select: none;
-            border: 2px solid #e2e8f0;
+            border: 3px solid #e2e8f0;
         }
 
         .cell:hover {
@@ -103,25 +103,31 @@
         }
 
         .words-list {
-            flex: 1;
-            min-width: 300px;
+            width: 100%;
+            max-width: 600px;
         }
 
         .words-header {
-            font-size: 1.5em;
+            font-size: 1.8em;
             color: #4a5568;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
         }
 
         .word-item {
             background: #f7fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
             transition: all 0.3s ease;
             cursor: pointer;
+            text-align: center;
         }
 
         .word-item:hover {
@@ -136,13 +142,14 @@
         }
 
         .word-text {
-            font-size: 1.2em;
+            font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #2d3748;
         }
 
         .word-meaning {
-            font-size: 0.9em;
+            font-size: 1.1em;
             color: #718096;
             font-style: italic;
         }
@@ -231,9 +238,9 @@
 <body>
     <div class="container">
         <h1>🐉 Nauka Japońskiego - Ukryte Słowa 🐉</h1>
-        <p class="subtitle">Znajdź wszystkie 8 japońskich wyrazów! Przeciągnij myszką po literach.</p>
+        <p class="subtitle">Znajdź wszystkie 5 japońskich wyrazów! Przeciągnij myszką po literach.</p>
         
-        <div class="progress-text">Postęp: <span id="progress-count">0</span>/8</div>
+        <div class="progress-text">Postęp: <span id="progress-count">0</span>/5</div>
         <div class="progress">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
@@ -263,21 +270,18 @@
 
     <script>
         const words = [
-            { text: 'ITADAKIMASU', meaning: 'Dziękuję za posiłek' },
+            { text: 'KAIJU', meaning: 'Potwór' },
             { text: 'OISHII', meaning: 'Pyszne' },
             { text: 'SAIKO', meaning: 'Świetnie' },
-            { text: 'YUKKURI', meaning: 'Powoli' },
-            { text: 'TEBURU', meaning: 'Stół' },
-            { text: 'KAIJU', meaning: 'Potwór' },
-            { text: 'OKAWARI', meaning: 'Dokładka' },
-            { text: 'DOZO', meaning: 'Proszę' }
+            { text: 'DOZO', meaning: 'Proszę' },
+            { text: 'TEBURU', meaning: 'Stół' }
         ];
 
         let grid = [];
         let foundWords = [];
         let selectedCells = [];
         let isSelecting = false;
-        let gridSize = 12;
+        let gridSize = 10;
 
         // Wypełnienie siatki losowymi literami
         function fillGrid() {
@@ -363,6 +367,7 @@
         function renderWords() {
             const wordsContainer = document.getElementById('words-container');
             wordsContainer.innerHTML = '';
+            wordsContainer.className = 'words-grid';
 
             words.forEach(wordObj => {
                 const wordElement = document.createElement('div');
